@@ -37,7 +37,7 @@ Yii读写分离包含两个组件：
 ```php
 ...
 'db'=>array(
-    'connectionString' => 'mysql:host=192.168.10.100;dbname=testDB',
+    'connectionString' => 'mysql:host=192.168.10.100;dbname=testDb',
     'username' => 'appuser',
     'password' => 'apppassword',
     'charset' => 'utf8',
@@ -51,8 +51,8 @@ Yii读写分离包含两个组件：
 ```php
 ...
 'db'=>array(
-    'class' => 'pub.MDbConnection', // 指定使用读写分离Class
-    'connectionString' => 'mysql:host=192.168.10.100;dbname=testDB', // 主库配置
+    'class' => 'MDbConnection', // 指定使用读写分离Class
+    'connectionString' => 'mysql:host=192.168.10.100;dbname=testDb', // 主库配置
     'username' => 'appuser',
     'password' => 'apppassword',
     'charset' => 'utf8',
@@ -93,8 +93,8 @@ Yii读写分离包含两个组件：
 ```php
 ...
 'db'=>array(
-    'class' => 'pub.MDbConnection', // 指定使用读写分离Class
-    'connectionString' => 'mysql:host=192.168.10.100;dbname=testDB', // 主库配置
+    'class' => 'MDbConnection', // 指定使用读写分离Class
+    'connectionString' => 'mysql:host=192.168.10.100;dbname=testDb', // 主库配置
     'username' => 'appuser',
     'password' => 'apppassword',
     'charset' => 'utf8',
@@ -139,7 +139,7 @@ Yii读写分离包含两个组件：
 ```php
 ...
 'dbRead'=>array(
-    'connectionString' => 'mysql:host=192.168.10.101;dbname=testDB',
+    'connectionString' => 'mysql:host=192.168.10.101;dbname=testDb',
     'username' => 'appuser',
     'password' => 'apppassword',
     'charset' => 'utf8',
@@ -171,3 +171,7 @@ Yii::app()->db->createCommand()
         'email' => 'quflylong@qq.com',
     ));
 ```
+
+## 反馈问题
+
+[快来提一个Issue吧。](https://github.com/devtoby/yii-db-read-write-splitting/issues/new)
