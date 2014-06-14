@@ -79,7 +79,7 @@
 
 <div class="highlight highlight-php"><pre><span class="o">...</span>
 <span class="s1">'db'</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
-    <span class="s1">'connectionString'</span> <span class="o">=&gt;</span> <span class="s1">'mysql:host=192.168.10.100;dbname=testDB'</span><span class="p">,</span>
+    <span class="s1">'connectionString'</span> <span class="o">=&gt;</span> <span class="s1">'mysql:host=192.168.10.100;dbname=testDb'</span><span class="p">,</span>
     <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'appuser'</span><span class="p">,</span>
     <span class="s1">'password'</span> <span class="o">=&gt;</span> <span class="s1">'apppassword'</span><span class="p">,</span>
     <span class="s1">'charset'</span> <span class="o">=&gt;</span> <span class="s1">'utf8'</span><span class="p">,</span>
@@ -92,8 +92,8 @@
 
 <div class="highlight highlight-php"><pre><span class="o">...</span>
 <span class="s1">'db'</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
-    <span class="s1">'class'</span> <span class="o">=&gt;</span> <span class="s1">'pub.MDbConnection'</span><span class="p">,</span> <span class="c1">// 指定使用读写分离Class</span>
-    <span class="s1">'connectionString'</span> <span class="o">=&gt;</span> <span class="s1">'mysql:host=192.168.10.100;dbname=testDB'</span><span class="p">,</span> <span class="c1">// 主库配置</span>
+    <span class="s1">'class'</span> <span class="o">=&gt;</span> <span class="s1">'MDbConnection'</span><span class="p">,</span> <span class="c1">// 指定使用读写分离Class</span>
+    <span class="s1">'connectionString'</span> <span class="o">=&gt;</span> <span class="s1">'mysql:host=192.168.10.100;dbname=testDb'</span><span class="p">,</span> <span class="c1">// 主库配置</span>
     <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'appuser'</span><span class="p">,</span>
     <span class="s1">'password'</span> <span class="o">=&gt;</span> <span class="s1">'apppassword'</span><span class="p">,</span>
     <span class="s1">'charset'</span> <span class="o">=&gt;</span> <span class="s1">'utf8'</span><span class="p">,</span>
@@ -134,8 +134,8 @@
 
 <div class="highlight highlight-php"><pre><span class="o">...</span>
 <span class="s1">'db'</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
-    <span class="s1">'class'</span> <span class="o">=&gt;</span> <span class="s1">'pub.MDbConnection'</span><span class="p">,</span> <span class="c1">// 指定使用读写分离Class</span>
-    <span class="s1">'connectionString'</span> <span class="o">=&gt;</span> <span class="s1">'mysql:host=192.168.10.100;dbname=testDB'</span><span class="p">,</span> <span class="c1">// 主库配置</span>
+    <span class="s1">'class'</span> <span class="o">=&gt;</span> <span class="s1">'MDbConnection'</span><span class="p">,</span> <span class="c1">// 指定使用读写分离Class</span>
+    <span class="s1">'connectionString'</span> <span class="o">=&gt;</span> <span class="s1">'mysql:host=192.168.10.100;dbname=testDb'</span><span class="p">,</span> <span class="c1">// 主库配置</span>
     <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'appuser'</span><span class="p">,</span>
     <span class="s1">'password'</span> <span class="o">=&gt;</span> <span class="s1">'apppassword'</span><span class="p">,</span>
     <span class="s1">'charset'</span> <span class="o">=&gt;</span> <span class="s1">'utf8'</span><span class="p">,</span>
@@ -185,7 +185,7 @@
 
 <div class="highlight highlight-php"><pre><span class="o">...</span>
 <span class="s1">'dbRead'</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
-    <span class="s1">'connectionString'</span> <span class="o">=&gt;</span> <span class="s1">'mysql:host=192.168.10.101;dbname=testDB'</span><span class="p">,</span>
+    <span class="s1">'connectionString'</span> <span class="o">=&gt;</span> <span class="s1">'mysql:host=192.168.10.101;dbname=testDb'</span><span class="p">,</span>
     <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'appuser'</span><span class="p">,</span>
     <span class="s1">'password'</span> <span class="o">=&gt;</span> <span class="s1">'apppassword'</span><span class="p">,</span>
     <span class="s1">'charset'</span> <span class="o">=&gt;</span> <span class="s1">'utf8'</span><span class="p">,</span>
@@ -216,6 +216,11 @@
         <span class="s1">'email'</span> <span class="o">=&gt;</span> <span class="s1">'quflylong@qq.com'</span><span class="p">,</span>
     <span class="p">));</span>
 </pre></div>
+
+<h2>
+<a name="%E5%8F%8D%E9%A6%88%E9%97%AE%E9%A2%98" class="anchor" href="#%E5%8F%8D%E9%A6%88%E9%97%AE%E9%A2%98"><span class="octicon octicon-link"></span></a>反馈问题</h2>
+
+<p><a href="https://github.com/devtoby/yii-db-read-write-splitting/issues/new">快来提一个Issue吧。</a></p>
       </section>
     </div>
 
