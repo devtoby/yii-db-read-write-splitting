@@ -139,6 +139,7 @@ Yii读写分离包含两个组件：
 ```php
 ...
 'dbRead'=>array(
+    'class' => 'MDbSlaveConnection',
     'connectionString' => 'mysql:host=192.168.10.101;dbname=testDb',
     'username' => 'appuser',
     'password' => 'apppassword',
