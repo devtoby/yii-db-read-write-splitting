@@ -2,9 +2,9 @@
 <html>
 
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Yii-db-read-write-splitting : Yii Framework 数据库读写分离组件" />
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Yii-db-read-write-splitting : Yii Framework 数据库读写分离组件">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
@@ -32,12 +32,12 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h1>
-<a name="yii%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB%E7%BB%84%E4%BB%B6" class="anchor" href="#yii%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB%E7%BB%84%E4%BB%B6"><span class="octicon octicon-link"></span></a>Yii数据库读写分离组件</h1>
+<a id="yii数据库读写分离组件" class="anchor" href="#yii%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB%E7%BB%84%E4%BB%B6" aria-hidden="true"><span class="octicon octicon-link"></span></a>Yii数据库读写分离组件</h1>
 
 <p>这是一个供Yii Framework（以下统称Yii）使用的数据库读写分离组件，使用此组件只需通过简单的配置，即可使你的应用自动的实现读写分离。</p>
 
 <h2>
-<a name="%E5%BC%80%E5%A7%8B%E4%B9%8B%E5%89%8D" class="anchor" href="#%E5%BC%80%E5%A7%8B%E4%B9%8B%E5%89%8D"><span class="octicon octicon-link"></span></a>开始之前</h2>
+<a id="开始之前" class="anchor" href="#%E5%BC%80%E5%A7%8B%E4%B9%8B%E5%89%8D" aria-hidden="true"><span class="octicon octicon-link"></span></a>开始之前</h2>
 
 <p>Yii读写分离包含两个组件：</p>
 
@@ -46,79 +46,81 @@
 <code>MDbConnection</code> 读写自动路由组件，使用这个名字更希望应用使用这个组件来替代Yii默认的CDbConnection</li>
 <li>
 <code>MDbSlaveConnection</code> 从库（Readonly）组件</li>
-</ol><p>一般在PHP项目中常用的实现读写分离的方法有两种：</p>
+</ol>
+
+<p>一般在PHP项目中常用的实现读写分离的方法有两种：</p>
 
 <ol>
 <li>
 <strong>自动分离</strong> 由系统来决定读与写应该在哪个数据库上，对工程师透明，正常情况下既有代码无需修改即可使用，可以做到完全的读写分离，而且从库故障时可以自动切换在主库读取，推荐使用；</li>
 <li>
 <strong>手动分离</strong> 由工程师来决定读与写应该在主还是从数据库上，工程师在开发时必须注意着主从的存在及其所带来的影响，但可能出现主库读取过度的问题（根据以往经验很多人会将大部分的读写都放在了主库上）。</li>
-</ol><p>下面将分别对两种实现读写分离的方法进行说明。</p>
+</ol>
+
+<p>下面将分别对两种实现读写分离的方法进行说明。</p>
 
 <h2>
-<a name="%E8%87%AA%E5%8A%A8%E5%88%86%E7%A6%BB" class="anchor" href="#%E8%87%AA%E5%8A%A8%E5%88%86%E7%A6%BB"><span class="octicon octicon-link"></span></a>自动分离</h2>
+<a id="自动分离" class="anchor" href="#%E8%87%AA%E5%8A%A8%E5%88%86%E7%A6%BB" aria-hidden="true"><span class="octicon octicon-link"></span></a>自动分离</h2>
 
 <p>自动分离无需指定是使用主库还是从库，并支持在<code>ActiveRecord</code>及<code>QueryBuilder</code>中的读写自动分离。支持多从库配置，每个请求只会落在随机的一个从库上，该从库为配置里面随机的一个，无需担心配置在前面的从库压力会过大。</p>
 
 <p>对于大部分业务来说切换为自动读写分离后不会对既有逻辑产生影响，可以做到平滑的切换，但对于写完立即读可能会存在读不到数据的情况，如有这样的写法请修改，仍然建议使用前Review自己的代码。</p>
 
 <h3>
-<a name="%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4" class="anchor" href="#%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4"><span class="octicon octicon-link"></span></a>安装步骤</h3>
+<a id="安装步骤" class="anchor" href="#%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4" aria-hidden="true"><span class="octicon octicon-link"></span></a>安装步骤</h3>
 
 <p>安装组件之前当然需要先把组件down一份到你的应用的<code>components</code>目录里面去，关于怎么down这个就不做介绍了，下面从放置组件开始。</p>
 
 <h4>
-<a name="%E6%94%BE%E7%BD%AE%E7%BB%84%E4%BB%B6" class="anchor" href="#%E6%94%BE%E7%BD%AE%E7%BB%84%E4%BB%B6"><span class="octicon octicon-link"></span></a>放置组件</h4>
+<a id="放置组件" class="anchor" href="#%E6%94%BE%E7%BD%AE%E7%BB%84%E4%BB%B6" aria-hidden="true"><span class="octicon octicon-link"></span></a>放置组件</h4>
 
 <p>将down下来的组件包中的<code>MDbConnection.php</code>、<code>MDbSlaveConnection.php</code>复制到你的应用组件目录中，正常来说路径应该在<code>protected/components</code>目录中。</p>
 
 <h4>
-<a name="%E4%BF%AE%E6%94%B9yii%E5%BA%94%E7%94%A8%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6" class="anchor" href="#%E4%BF%AE%E6%94%B9yii%E5%BA%94%E7%94%A8%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="octicon octicon-link"></span></a>修改Yii应用的配置文件</h4>
+<a id="修改yii应用的配置文件" class="anchor" href="#%E4%BF%AE%E6%94%B9yii%E5%BA%94%E7%94%A8%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6" aria-hidden="true"><span class="octicon octicon-link"></span></a>修改Yii应用的配置文件</h4>
 
 <p>修改Yii应用的配置文件，默认的配置文件为<code>protected/main.php</code>，然后在其中找components 部分下的 db 组件的配置，例如：</p>
 
-<div class="highlight highlight-php"><pre><span class="o">...</span>
-<span class="s1">'db'</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
-    <span class="s1">'connectionString'</span> <span class="o">=&gt;</span> <span class="s1">'mysql:host=192.168.10.100;dbname=testDb'</span><span class="p">,</span>
-    <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'appuser'</span><span class="p">,</span>
-    <span class="s1">'password'</span> <span class="o">=&gt;</span> <span class="s1">'apppassword'</span><span class="p">,</span>
-    <span class="s1">'charset'</span> <span class="o">=&gt;</span> <span class="s1">'utf8'</span><span class="p">,</span>
-    <span class="s1">'tablePrefix'</span> <span class="o">=&gt;</span> <span class="s1">'app_'</span><span class="p">,</span>
-<span class="p">),</span>
-<span class="o">...</span>
-</pre></div>
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-k">...</span></span>
+<span class="pl-s1"><span class="pl-s"><span class="pl-pds">'</span>db<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-c1">array</span>(</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>connectionString<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>mysql:host=192.168.10.100;dbname=testDb<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>appuser<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>apppassword<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>charset<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>utf8<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>tablePrefix<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>app_<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">),</span>
+<span class="pl-s1"><span class="pl-k">...</span></span></pre></div>
 
 <p>将其修改为：</p>
 
-<div class="highlight highlight-php"><pre><span class="o">...</span>
-<span class="s1">'db'</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
-    <span class="s1">'class'</span> <span class="o">=&gt;</span> <span class="s1">'MDbConnection'</span><span class="p">,</span> <span class="c1">// 指定使用读写分离Class</span>
-    <span class="s1">'connectionString'</span> <span class="o">=&gt;</span> <span class="s1">'mysql:host=192.168.10.100;dbname=testDb'</span><span class="p">,</span> <span class="c1">// 主库配置</span>
-    <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'appuser'</span><span class="p">,</span>
-    <span class="s1">'password'</span> <span class="o">=&gt;</span> <span class="s1">'apppassword'</span><span class="p">,</span>
-    <span class="s1">'charset'</span> <span class="o">=&gt;</span> <span class="s1">'utf8'</span><span class="p">,</span>
-    <span class="s1">'tablePrefix'</span> <span class="o">=&gt;</span> <span class="s1">'app_'</span><span class="p">,</span>
-    <span class="s1">'timeout'</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">,</span> <span class="c1">// 增加数据库连接超时时间，默认3s</span>
-    <span class="s1">'slaves'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-        <span class="k">array</span><span class="p">(</span>
-            <span class="s1">'connectionString'</span> <span class="o">=&gt;</span> <span class="s1">'mysql:host=192.168.10.101;dbname=testDb'</span><span class="p">,</span>
-            <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'appuser'</span><span class="p">,</span>
-            <span class="s1">'password'</span> <span class="o">=&gt;</span> <span class="s1">'apppassword'</span><span class="p">,</span>
-        <span class="p">),</span> <span class="c1">// 从库 1</span>
-        <span class="k">array</span><span class="p">(</span>
-            <span class="s1">'connectionString'</span> <span class="o">=&gt;</span> <span class="s1">'mysql:host=192.168.10.102;dbname=testDb'</span><span class="p">,</span>
-            <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'appuser'</span><span class="p">,</span>
-            <span class="s1">'password'</span> <span class="o">=&gt;</span> <span class="s1">'apppassword'</span><span class="p">,</span>
-        <span class="p">),</span> <span class="c1">// 从库 2</span>
-    <span class="p">),</span> <span class="c1">// 从库配置</span>
-<span class="p">),</span>
-<span class="o">...</span>
-</pre></div>
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-k">...</span></span>
+<span class="pl-s1"><span class="pl-s"><span class="pl-pds">'</span>db<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-c1">array</span>(</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>class<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>MDbConnection<span class="pl-pds">'</span></span>, <span class="pl-c">// 指定使用读写分离Class</span></span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>connectionString<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>mysql:host=192.168.10.100;dbname=testDb<span class="pl-pds">'</span></span>, <span class="pl-c">// 主库配置</span></span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>appuser<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>apppassword<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>charset<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>utf8<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>tablePrefix<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>app_<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>timeout<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">3</span>, <span class="pl-c">// 增加数据库连接超时时间，默认3s</span></span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>slaves<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">        <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>connectionString<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>mysql:host=192.168.10.101;dbname=testDb<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>appuser<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>apppassword<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        ), <span class="pl-c">// 从库 1</span></span>
+<span class="pl-s1">        <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>connectionString<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>mysql:host=192.168.10.102;dbname=testDb<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>appuser<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>apppassword<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        ), <span class="pl-c">// 从库 2</span></span>
+<span class="pl-s1">    ), <span class="pl-c">// 从库配置</span></span>
+<span class="pl-s1">),</span>
+<span class="pl-s1"><span class="pl-k">...</span></span></pre></div>
 
 <p><strong><em>注意：slaves中的配置必须是二维数组，可配置的值为CDbConnection中支持的全部值（属性）。</em></strong></p>
 
 <h3>
-<a name="%E9%85%8D%E7%BD%AE%E7%BB%A7%E6%89%BF" class="anchor" href="#%E9%85%8D%E7%BD%AE%E7%BB%A7%E6%89%BF"><span class="octicon octicon-link"></span></a>配置继承</h3>
+<a id="配置继承" class="anchor" href="#%E9%85%8D%E7%BD%AE%E7%BB%A7%E6%89%BF" aria-hidden="true"><span class="octicon octicon-link"></span></a>配置继承</h3>
 
 <p>为简化应用配置的复杂度、以及结合大部分应用的使用场景，从库配置（部分配置）如果没有设置则会自动继承主库的配置，会继承的配置为：</p>
 
@@ -130,95 +132,96 @@
 <li>timeout</li>
 <li>emulatePrepare</li>
 <li>enableParamLogging</li>
-</ul><p>因此配置文件也可以简化为：</p>
+</ul>
 
-<div class="highlight highlight-php"><pre><span class="o">...</span>
-<span class="s1">'db'</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
-    <span class="s1">'class'</span> <span class="o">=&gt;</span> <span class="s1">'MDbConnection'</span><span class="p">,</span> <span class="c1">// 指定使用读写分离Class</span>
-    <span class="s1">'connectionString'</span> <span class="o">=&gt;</span> <span class="s1">'mysql:host=192.168.10.100;dbname=testDb'</span><span class="p">,</span> <span class="c1">// 主库配置</span>
-    <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'appuser'</span><span class="p">,</span>
-    <span class="s1">'password'</span> <span class="o">=&gt;</span> <span class="s1">'apppassword'</span><span class="p">,</span>
-    <span class="s1">'charset'</span> <span class="o">=&gt;</span> <span class="s1">'utf8'</span><span class="p">,</span>
-    <span class="s1">'tablePrefix'</span> <span class="o">=&gt;</span> <span class="s1">'app_'</span><span class="p">,</span>
-    <span class="s1">'slaves'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
-        <span class="k">array</span><span class="p">(</span>
-            <span class="s1">'connectionString'</span> <span class="o">=&gt;</span> <span class="s1">'mysql:host=192.168.10.101;dbname=testDb'</span><span class="p">,</span>
-        <span class="p">),</span> <span class="c1">// 从库 1</span>
-        <span class="k">array</span><span class="p">(</span>
-            <span class="s1">'connectionString'</span> <span class="o">=&gt;</span> <span class="s1">'mysql:host=192.168.10.102;dbname=testDb'</span><span class="p">,</span>
-        <span class="p">),</span> <span class="c1">// 从库 2</span>
-    <span class="p">),</span> <span class="c1">// 从库配置</span>
-<span class="p">),</span>
-<span class="o">...</span>
-</pre></div>
+<p>因此配置文件也可以简化为：</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-k">...</span></span>
+<span class="pl-s1"><span class="pl-s"><span class="pl-pds">'</span>db<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-c1">array</span>(</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>class<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>MDbConnection<span class="pl-pds">'</span></span>, <span class="pl-c">// 指定使用读写分离Class</span></span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>connectionString<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>mysql:host=192.168.10.100;dbname=testDb<span class="pl-pds">'</span></span>, <span class="pl-c">// 主库配置</span></span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>appuser<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>apppassword<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>charset<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>utf8<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>tablePrefix<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>app_<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>slaves<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">        <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>connectionString<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>mysql:host=192.168.10.101;dbname=testDb<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        ), <span class="pl-c">// 从库 1</span></span>
+<span class="pl-s1">        <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>connectionString<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>mysql:host=192.168.10.102;dbname=testDb<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        ), <span class="pl-c">// 从库 2</span></span>
+<span class="pl-s1">    ), <span class="pl-c">// 从库配置</span></span>
+<span class="pl-s1">),</span>
+<span class="pl-s1"><span class="pl-k">...</span></span></pre></div>
 
 <h3>
-<a name="%E5%85%B3%E9%97%AD%E4%BB%8E%E5%BA%93" class="anchor" href="#%E5%85%B3%E9%97%AD%E4%BB%8E%E5%BA%93"><span class="octicon octicon-link"></span></a>关闭从库</h3>
+<a id="关闭从库" class="anchor" href="#%E5%85%B3%E9%97%AD%E4%BB%8E%E5%BA%93" aria-hidden="true"><span class="octicon octicon-link"></span></a>关闭从库</h3>
 
 <p>如果需要临时关闭从库查询，或者没有从库只需注释掉slaves部分的配置即可。</p>
 
 <h3>
-<a name="%E6%B3%A8%E6%84%8F" class="anchor" href="#%E6%B3%A8%E6%84%8F"><span class="octicon octicon-link"></span></a>注意</h3>
+<a id="注意" class="anchor" href="#%E6%B3%A8%E6%84%8F" aria-hidden="true"><span class="octicon octicon-link"></span></a>注意</h3>
 
 <ul>
 <li>在所有从库无法连接时，读操作会在主库上进行，反之则不会；</li>
 <li>进行写操作（在主库）后，立即读数据（在从库），可能会存在延时问题，在使用时请避免此类写法。</li>
-</ul><h2>
-<a name="%E6%89%8B%E5%8A%A8%E5%88%86%E7%A6%BB" class="anchor" href="#%E6%89%8B%E5%8A%A8%E5%88%86%E7%A6%BB"><span class="octicon octicon-link"></span></a>手动分离</h2>
+</ul>
+
+<h2>
+<a id="手动分离" class="anchor" href="#%E6%89%8B%E5%8A%A8%E5%88%86%E7%A6%BB" aria-hidden="true"><span class="octicon octicon-link"></span></a>手动分离</h2>
 
 <p>在自动分离中，数据库的读写对工程师是透明的，因此会在开发过程中出现未考虑主从延时的问题，导致一些潜在的漏洞。相比之下手动分离则提醒着工程师时刻注意着主从的存在。</p>
 
 <h3>
-<a name="%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4-1" class="anchor" href="#%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4-1"><span class="octicon octicon-link"></span></a>安装步骤</h3>
+<a id="安装步骤-1" class="anchor" href="#%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>安装步骤</h3>
 
 <p>同自动分离部分，你首先也需要down一份组件下来。</p>
 
 <h4>
-<a name="%E6%94%BE%E7%BD%AE%E7%BB%84%E4%BB%B6-1" class="anchor" href="#%E6%94%BE%E7%BD%AE%E7%BB%84%E4%BB%B6-1"><span class="octicon octicon-link"></span></a>放置组件</h4>
+<a id="放置组件-1" class="anchor" href="#%E6%94%BE%E7%BD%AE%E7%BB%84%E4%BB%B6-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>放置组件</h4>
 
 <p>手动分离只依赖组件包中的<code>MDbSlaveConnection.php</code>，将其复制到你的应用组件目录中，正常来说路径应该在<code>protected/components</code>目录中。</p>
 
 <h4>
-<a name="%E4%BF%AE%E6%94%B9yii%E5%BA%94%E7%94%A8%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-1" class="anchor" href="#%E4%BF%AE%E6%94%B9yii%E5%BA%94%E7%94%A8%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-1"><span class="octicon octicon-link"></span></a>修改Yii应用的配置文件</h4>
+<a id="修改yii应用的配置文件-1" class="anchor" href="#%E4%BF%AE%E6%94%B9yii%E5%BA%94%E7%94%A8%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>修改Yii应用的配置文件</h4>
 
 <p>修改Yii应用的配置文件，默认的配置文件为<code>protected/main.php</code>，然后在 components 中 db 的配置后增加从库组件的配置，例如：</p>
 
-<div class="highlight highlight-php"><pre><span class="o">...</span>
-<span class="s1">'dbRead'</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
-    <span class="s1">'connectionString'</span> <span class="o">=&gt;</span> <span class="s1">'mysql:host=192.168.10.101;dbname=testDb'</span><span class="p">,</span>
-    <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'appuser'</span><span class="p">,</span>
-    <span class="s1">'password'</span> <span class="o">=&gt;</span> <span class="s1">'apppassword'</span><span class="p">,</span>
-    <span class="s1">'charset'</span> <span class="o">=&gt;</span> <span class="s1">'utf8'</span><span class="p">,</span>
-    <span class="s1">'tablePrefix'</span> <span class="o">=&gt;</span> <span class="s1">'app_'</span><span class="p">,</span>
-<span class="p">),</span>
-<span class="o">...</span>
-</pre></div>
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-k">...</span></span>
+<span class="pl-s1"><span class="pl-s"><span class="pl-pds">'</span>dbRead<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-c1">array</span>(</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>class<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>MDbSlaveConnection<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>connectionString<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>mysql:host=192.168.10.101;dbname=testDb<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>appuser<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>password<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>apppassword<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>charset<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>utf8<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>tablePrefix<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>app_<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">),</span>
+<span class="pl-s1"><span class="pl-k">...</span></span></pre></div>
 
 <p><strong>手动分离中，从库目前不会继承主库的配置哦！</strong></p>
 
 <h4>
-<a name="%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B" class="anchor" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="octicon octicon-link"></span></a>使用示例</h4>
+<a id="使用示例" class="anchor" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B" aria-hidden="true"><span class="octicon octicon-link"></span></a>使用示例</h4>
 
 <p>在应用中进行读操作</p>
 
-<div class="highlight highlight-php"><pre><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">dbRead</span><span class="o">-&gt;</span><span class="na">createCommand</span><span class="p">()</span>
-    <span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="s1">'id, username, email'</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">from</span><span class="p">(</span><span class="s1">'{{user}}'</span><span class="p">)</span>
-    <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="s1">'id=:id'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">':id'</span><span class="o">=&gt;</span><span class="nv">$id</span><span class="p">))</span>
-    <span class="o">-&gt;</span><span class="na">queryRow</span><span class="p">();</span>
-</pre></div>
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-c1">Yii</span><span class="pl-k">::</span>app()<span class="pl-k">-&gt;</span><span class="pl-smi">dbRead</span><span class="pl-k">-&gt;</span>createCommand()</span>
+<span class="pl-s1">    <span class="pl-k">-&gt;</span>select(<span class="pl-s"><span class="pl-pds">'</span>id, username, email<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s1">    <span class="pl-k">-&gt;</span>from(<span class="pl-s"><span class="pl-pds">'</span>{{user}}<span class="pl-pds">'</span></span>)</span>
+<span class="pl-s1">    <span class="pl-k">-&gt;</span>where(<span class="pl-s"><span class="pl-pds">'</span>id=:id<span class="pl-pds">'</span></span>, <span class="pl-c1">array</span>(<span class="pl-s"><span class="pl-pds">'</span>:id<span class="pl-pds">'</span></span><span class="pl-k">=&gt;</span><span class="pl-smi">$id</span>))</span>
+<span class="pl-s1">    <span class="pl-k">-&gt;</span>queryRow();</span></pre></div>
 
 <p>在应用中进行写操作</p>
 
-<div class="highlight highlight-php"><pre><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">createCommand</span><span class="p">()</span>
-    <span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="s1">'{{user}}'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
-        <span class="s1">'username'</span> <span class="o">=&gt;</span> <span class="s1">'devtoby'</span><span class="p">,</span>
-        <span class="s1">'email'</span> <span class="o">=&gt;</span> <span class="s1">'quflylong@qq.com'</span><span class="p">,</span>
-    <span class="p">));</span>
-</pre></div>
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-c1">Yii</span><span class="pl-k">::</span>app()<span class="pl-k">-&gt;</span><span class="pl-smi">db</span><span class="pl-k">-&gt;</span>createCommand()</span>
+<span class="pl-s1">    <span class="pl-k">-&gt;</span>insert(<span class="pl-s"><span class="pl-pds">'</span>{{user}}<span class="pl-pds">'</span></span>, <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>username<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>devtoby<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>email<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>quflylong@qq.com<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">    ));</span></pre></div>
 
 <h2>
-<a name="%E5%8F%8D%E9%A6%88%E9%97%AE%E9%A2%98" class="anchor" href="#%E5%8F%8D%E9%A6%88%E9%97%AE%E9%A2%98"><span class="octicon octicon-link"></span></a>反馈问题</h2>
+<a id="反馈问题" class="anchor" href="#%E5%8F%8D%E9%A6%88%E9%97%AE%E9%A2%98" aria-hidden="true"><span class="octicon octicon-link"></span></a>反馈问题</h2>
 
 <p><a href="https://github.com/devtoby/yii-db-read-write-splitting/issues/new">快来提一个Issue吧。</a></p>
       </section>
@@ -228,7 +231,7 @@
     <div id="footer_wrap" class="outer">
       <footer class="inner">
         <p class="copyright">Yii-db-read-write-splitting maintained by <a href="https://github.com/devtoby">devtoby</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
 
